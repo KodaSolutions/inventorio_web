@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventorio_web/admin/listeners/breakPoint.dart';
 import 'package:inventorio_web/admin/listeners/sizeSideMenu.dart';
+import 'package:inventorio_web/admin/widgetsAdmin/visualStats/visualStats.dart';
 
 import '../listeners/sideBarHeight.dart';
 import '../widgetsAdmin/header.dart';
@@ -40,7 +41,7 @@ class _AdminState extends State<Admin> {
           AnimatedContainer(
             alignment: Alignment.center,
             duration: const Duration(milliseconds: 150),
-            width: breakPoint.expand!= 1 && breakPoint.expand != 2 ? 0 :  expandedMenu ? containerSideMenuWidth : 80,
+            width: breakPoint.valor!= 1 && breakPoint.valor != 2 ? 0 :  expandedMenu ? containerSideMenuWidth : 80,
             child: SideMenu(
               containerSideMenuWidth: containerSideMenuWidth,
               sideBarHeightListener: sideBarHeightListener,
@@ -50,6 +51,8 @@ class _AdminState extends State<Admin> {
           ),
           Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                   color: Colors.transparent,child:
@@ -62,23 +65,35 @@ class _AdminState extends State<Admin> {
                 });
               },
                 onChangeSizeSideMenu: (changeSize) {
-                  print('changeadminr $changeSize');
                   setState(() {
                     expandedMenu = changeSize;
                     changeSizeSideMenu.setValue(changeSize);
                   });
 
               },),),
-               Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 20
-                    ),
-                    child: Header(breakPoint: (breakPoint) {
-                      this.breakPoint.setValue(breakPoint);
-                    },),
-                  )),
+               Flexible(child: SingleChildScrollView(
+                 child: Column(
+                   mainAxisSize: MainAxisSize.min,
+                   children: [
+                     Flexible(
+                         child: Container(
+                           padding: EdgeInsets.symmetric(
+                               vertical: 20,
+                               horizontal: 20
+                           ),
+                           child: Header(
+                             breakPoint: (breakPoint) {
+                               print('breakAdmin $breakPoint');
+                             this.breakPoint.setValue(breakPoint);
+                           },),
+                         )),
+                     Flexible(
+                         child: VisualStats(
+                           breakPoint: breakPoint
+                     )),
+                   ],
+                 ),
+               ))
             ],
           )),
         ],

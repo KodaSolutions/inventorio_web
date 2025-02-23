@@ -47,6 +47,9 @@ class _HeaderState extends State<Header> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      widget.breakPoint(edoBreakPoint);
+    });
   }
 
   void updateBreakPoint(double width) {
@@ -86,6 +89,7 @@ class _HeaderState extends State<Header> {
         });
 
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
                 children: [
