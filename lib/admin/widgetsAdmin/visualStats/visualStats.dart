@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inventorio_web/admin/listeners/breakPoint.dart';
 import 'package:inventorio_web/admin/widgetsAdmin/infoWidgets/visualStatsInfo.dart';
-import 'package:inventorio_web/admin/widgetsAdmin/visualStats/imgStatsCard.dart';
+import 'package:inventorio_web/admin/widgetsAdmin/visualStats/vsWidgets/imgStatsCard.dart';
 import 'package:inventorio_web/admin/widgetsAdmin/visualStats/listeners/listenerCardsHeight.dart';
-import 'package:inventorio_web/admin/widgetsAdmin/visualStats/visualStatsCard.dart';
+import 'package:inventorio_web/admin/widgetsAdmin/visualStats/vsWidgets/visualStatsCard.dart';
 
 class VisualStats extends StatefulWidget {
   final BreakPoint breakPoint;
@@ -31,7 +31,7 @@ class _VisualStatsState extends State<VisualStats> {
     WidgetsBinding.instance.addPostFrameCallback((_){
       widget.breakPoint.registrarObservador((breakPoint) {
         if(breakPoint != 0 && mounted){
-          this.breakPoint = breakPoint;
+          setState(()=> this.breakPoint = breakPoint);
         }
       });
     });
@@ -77,36 +77,44 @@ class _VisualStatsState extends State<VisualStats> {
 
   @override
   Widget build(BuildContext context) {
-    return breakPoint == 0 ? CircularProgressIndicator() :
+    return breakPoint == 0 ? const CircularProgressIndicator() :
     Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-      child: Container(
-        child: breakPoint == 1 || breakPoint == 0 ? Row(
+      child: breakPoint == 1 ? Container(
+        padding: const EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 25),
+        child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-              child: StatsCard(
-                  heightBreakPointed: finalHeight,
-                  cardsHeight: cardsHeight,
-                  visualStatsInfo: visualStatsInfo, onAsignHeightStatsCard: onAsignHeightStatsCard)),
-            const SizedBox(width: 10),
+                child: StatsCard(
+                    heightBreakPointed: finalHeight,
+                    cardsHeight: cardsHeight,
+                    visualStatsInfo: visualStatsInfo, onAsignHeightStatsCard: onAsignHeightStatsCard)),
+            spaceHorizontal(),
             ImageCard(
                 heightBreakPointed: finalHeight,
                 cardsHeight: cardsHeight,
                 visualStatsInfo: visualStatsInfo, imgScale: imgScale!, onAsignHeightImgCard: onAsignHeightImgCard)
           ],
-        ) : Column(
-          children: [
-            StatsCard(
-              heightBreakPointed: finalHeight,
-                cardsHeight: cardsHeight,
-                visualStatsInfo: visualStatsInfo, onAsignHeightStatsCard: onAsignHeightStatsCard),
-            const SizedBox(width: 10),
-            ImageCard(
-                heightBreakPointed: finalHeight,
-                cardsHeight: cardsHeight,
-                visualStatsInfo: visualStatsInfo, imgScale: imgScale!, onAsignHeightImgCard: onAsignHeightImgCard)])));}
+        )
+      ) : Container(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+        child: Column(
+            children: [
+              StatsCard(
+                  heightBreakPointed: finalHeight,
+                  cardsHeight: cardsHeight,
+                  visualStatsInfo: visualStatsInfo, onAsignHeightStatsCard: onAsignHeightStatsCard),
+              const SizedBox(width: 10),
+              spaceVertical(),
+              ImageCard(
+                  heightBreakPointed: finalHeight,
+                  cardsHeight: cardsHeight,
+                  visualStatsInfo: visualStatsInfo, imgScale: imgScale!, onAsignHeightImgCard: onAsignHeightImgCard)])
+      ));}
 
   Widget buildStatusColumn(String number, String status, Color color) {
     return Column(
@@ -127,6 +135,13 @@ class _VisualStatsState extends State<VisualStats> {
         ),
       ],
     );
+  }
+
+  Widget spaceVertical (){
+    return const SizedBox(height: 25);
+  }
+  Widget spaceHorizontal (){
+    return const SizedBox(width: 15);
   }
 
   static const TextStyle _titleStyle = TextStyle(
