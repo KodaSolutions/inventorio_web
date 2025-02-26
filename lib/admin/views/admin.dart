@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventorio_web/admin/listeners/breakPoint.dart';
 import 'package:inventorio_web/admin/listeners/sizeSideMenu.dart';
+import 'package:inventorio_web/admin/widgetsAdmin/tableStats/tableStats.dart';
 import 'package:inventorio_web/admin/widgetsAdmin/visualStats/visualStats.dart';
 
 import '../listeners/sideBarHeight.dart';
@@ -35,6 +36,7 @@ class _AdminState extends State<Admin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[50],
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,6 +90,10 @@ class _AdminState extends State<Admin> {
                      )),
                      Flexible(
                          child: Activitystats(
+                           breakPoint: breakPoint
+                     )),
+                     Flexible(
+                         child: TableStats(
                            breakPoint: breakPoint
                      )),
                    ],

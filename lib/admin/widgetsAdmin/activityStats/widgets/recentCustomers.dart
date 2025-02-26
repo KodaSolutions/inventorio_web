@@ -9,6 +9,9 @@ class RecentCustomers extends StatelessWidget {
     Widget spaceVertical (){
       return SizedBox( height: 9,);
     }
+    Widget spaceVerticalLV (){
+      return SizedBox( height: 4);
+    }
     Widget spaceVerticalScroll (){
       return SizedBox( height: 7,);
     }
@@ -25,9 +28,9 @@ class RecentCustomers extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('RECENT CUSTOMERS', style: titlestyle),
+            const Text('RECENT CUSTOMERS', style: titlestyle),
             spaceVertical(),
-            Text('A customer is an individual or business that purchases the goods service has envolved to include real-time',
+            const Text('A customer is an individual or business that purchases the goods service has envolved to include real-time',
             style: TextStyle(
               color: Colors.black54
             ),),
@@ -36,42 +39,55 @@ class RecentCustomers extends StatelessWidget {
               child: ListView.builder(
                   itemCount: 6,
                   shrinkWrap: true,
-                  itemBuilder: (context, index){
+                  itemBuilder: (context, index) {
                     return Container(
-                      decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(
-                          color: Colors.black54.withOpacity(0.3),
-                        ))
-                      ),
-                      margin: EdgeInsets.only(bottom: 15, right: 15, left: 15),
-                      padding: EdgeInsets.only(bottom: 15),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.black54.withOpacity(0.3),
+                                    )
+                                )
                             ),
-                            spaceHorizontal(),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Name of the client', style: titlestyle),
-                                spaceVerticalScroll(),
-                                Text('User ID: #1456', style: TextStyle(
-                                  color: Colors.black54
-                                ),),
-                                spaceVerticalScroll(),
-                                Text('Paid or Pending', style: TextStyle(
-                                  color: Colors.green
-                                ),),
-                              ],
+                            margin: const EdgeInsets.only(right: 15, left: 15),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                  hoverColor: Colors.blue[50],
+                                  onTap: () {
+                                    // Acción al hacer clic si es necesario
+                                  },
+                                  child:  Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                children: [
+                                  const CircleAvatar(
+                                    radius: 20,
+                                  ),
+                                  spaceHorizontal(),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      spaceVertical(),
+                                      const Text('Name of the client', style: titlestyle),
+                                      spaceVerticalScroll(),
+                                      const Text('User ID: #1456', style: TextStyle(
+                                          color: Colors.black54
+                                      ),),
+                                      spaceVerticalScroll(),
+                                      const Text('Paid or Pending', style: TextStyle(
+                                          color: Colors.green
+                                      ),),
+                                      spaceVerticalLV(),
+                                    ],
+                                  )
+                                ],
+                              ),
                             )
-                          ],
                         ),
-                      )
+                      ),
                     );
-                  }),
+                  }
+              ),
             )
           ],
         ),
