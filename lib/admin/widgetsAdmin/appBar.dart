@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventorio_web/admin/listeners/breakPoint.dart';
+import 'dart:math' as math;
 
 class AppBarAdmin extends StatefulWidget {
   final Function(double?) onAsignHeightHeader;
@@ -12,8 +13,10 @@ class AppBarAdmin extends StatefulWidget {
   State<AppBarAdmin> createState() => _AppBarAdminState();
 }
 
-class _AppBarAdminState extends State<AppBarAdmin> {
+class _AppBarAdminState extends State<AppBarAdmin> with SingleTickerProviderStateMixin {
 
+  late AnimationController aniController;
+  late Animation<double> rotation;
   double? heightContainer;
   bool expandedSideMenu = true;
   final GlobalKey _keyContainer = GlobalKey();
@@ -23,6 +26,8 @@ class _AppBarAdminState extends State<AppBarAdmin> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    aniController = AnimationController(vsync: this, duration:  const Duration(milliseconds: 4900),);
+    rotation = Tween(begin: 0.0, end:  4.0 * math.pi).animate(aniController);
     WidgetsBinding.instance.addPostFrameCallback((_){
       heightContainer = _keyContainer.currentContext!.size!.height;
       widget.onAsignHeightHeader(heightContainer);
@@ -30,7 +35,13 @@ class _AppBarAdminState extends State<AppBarAdmin> {
     widget.breakPoint.registrarObservador((breakPoint) {
       if(this.breakPoint != breakPoint && breakPoint != 0){
         this.breakPoint = breakPoint;
+        aniController.forward();
         setState(() => this.breakPoint = breakPoint);
+      }
+    });
+    aniController.addListener((){
+      if(aniController.status == AnimationStatus.completed){
+        aniController.repeat();
       }
     });
   }
@@ -47,6 +58,7 @@ class _AppBarAdminState extends State<AppBarAdmin> {
       return Container(
         key: _keyContainer,
         decoration: BoxDecoration(
+          color: Colors.white,
           border: Border(
             right: BorderSide(
               color: Colors.black54.withOpacity(0.1),
@@ -87,6 +99,7 @@ class _AppBarAdminState extends State<AppBarAdmin> {
                         color: Colors.black54.withOpacity(0.3),
                       ),
                       filled: true,
+                      fillColor: Colors.blue[50],
                       isCollapsed: true,
                       contentPadding: EdgeInsets.only(
                         top: 11.5,
@@ -133,13 +146,19 @@ class _AppBarAdminState extends State<AppBarAdmin> {
                 SizedBox(width: 10,),
                 IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
                 SizedBox(width: 10,),
-                CircleAvatar(
+                const CircleAvatar(
                     radius: 15
                 ),
                 SizedBox(width: 10,),
-                IconButton(
-                    onPressed: (){}, icon: Icon(CupertinoIcons.gear)),
-                SizedBox(width: 10,),
+                AnimatedBuilder(
+                    animation: aniController,
+                    child: IconButton(
+                        onPressed: (){}, icon: const Icon(CupertinoIcons.gear,
+                    size: 28)),
+                    builder: (context, gearRot){
+                  return Transform.rotate(angle: rotation.value, child: gearRot);
+                }),
+                const SizedBox(width: 10,),
               ],
             )
           ],
