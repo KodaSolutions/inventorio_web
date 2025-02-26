@@ -5,6 +5,7 @@ import 'package:inventorio_web/admin/listeners/sizeSideMenu.dart';
 import 'package:inventorio_web/admin/widgetsAdmin/visualStats/visualStats.dart';
 
 import '../listeners/sideBarHeight.dart';
+import '../widgetsAdmin/activityStats/activityStats.dart';
 import '../widgetsAdmin/header.dart';
 import '../widgetsAdmin/appBar.dart';
 import '../widgetsAdmin/sideMenu.dart';
@@ -71,24 +72,22 @@ class _AdminState extends State<Admin> {
                   });
 
               },),),
-               Flexible(child: SingleChildScrollView(
+               Flexible(
+                   child: SingleChildScrollView(
                  child: Column(
                    mainAxisSize: MainAxisSize.min,
                    children: [
                      Flexible(
-                         child: Container(
-                           padding: EdgeInsets.symmetric(
-                               vertical: 20,
-                               horizontal: 20
-                           ),
-                           child: Header(
-                             breakPoint: (breakPoint) {
-                               print('breakAdmin $breakPoint');
-                             this.breakPoint.setValue(breakPoint);
-                           },),
-                         )),
+                         child: Header(
+                           breakPoint: (breakPoint) {
+                           this.breakPoint.setValue(breakPoint);
+                         },)),
                      Flexible(
                          child: VisualStats(
+                           breakPoint: breakPoint
+                     )),
+                     Flexible(
+                         child: Activitystats(
                            breakPoint: breakPoint
                      )),
                    ],

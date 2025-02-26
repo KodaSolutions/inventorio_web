@@ -93,6 +93,7 @@ class _HeaderState extends State<Header> {
           children: [
             Row(
                 children: [
+                  spacerHorizontal(),
                   Expanded(
                     child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,19 +118,20 @@ class _HeaderState extends State<Header> {
                   ),),
                   if(edoBreakPoint != 4)...[
                     lateralInfo(true),
-                  ]
-
+                  ],
+                  spacerHorizontal(),
                 ],
             ),
             const SizedBox(height: 20,),
             if(edoBreakPoint == 2 || edoBreakPoint == 3)...[
               GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 25),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
                     mainAxisExtent: 155,
                   ),
                   itemCount: 4,
@@ -145,23 +147,29 @@ class _HeaderState extends State<Header> {
                     );}
               )
             ]
-            else if(edoBreakPoint == 1) ... [Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(cardData.length, (index) {
-                final card = cardData[index];
-                return containerColored(
-                  card['amount'],
-                  card['title'],
-                  card['description'],
-                  card['colors'],
-                  containerWidthResponsive,
-                  containerHeightFijo,
-                );
-              }),
-            ) ,]
+            else if(edoBreakPoint == 1) ... [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 23),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(cardData.length, (index) {
+                    final card = cardData[index];
+                    return containerColored(
+                      card['amount'],
+                      card['title'],
+                      card['description'],
+                      card['colors'],
+                      containerWidthResponsive,
+                      containerHeightFijo,
+                    );
+                  }),
+                ),
+              )
+            ]
             else if(edoBreakPoint == 4)...[
                 GridView.builder(
                     shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     physics: const NeverScrollableScrollPhysics(), // Evita scroll interno
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 1,
@@ -191,7 +199,6 @@ class _HeaderState extends State<Header> {
   Widget containerColored (String amuount, String title, String description, List<Color> colors, double width, double height,) {
     assert(colors.length == 3, 'La lista de colores debe contener exactamente 3 colores.');
     return Container(
-      width: width,
       height: height,
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
@@ -305,4 +312,9 @@ class _HeaderState extends State<Header> {
       ],
     );
   }
+
+  Widget spacerHorizontal (){
+    return const SizedBox(width: 20);
+  }
+
 }

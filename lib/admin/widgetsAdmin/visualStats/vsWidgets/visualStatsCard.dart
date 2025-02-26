@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventorio_web/admin/widgetsAdmin/visualStats/listeners/listenerCardsHeight.dart';
-
-import '../infoWidgets/visualStatsInfo.dart';
+import '../../infoWidgets/visualStatsInfo.dart';
 
 class StatsCard extends StatefulWidget {
   final Function (double) onAsignHeightStatsCard;
