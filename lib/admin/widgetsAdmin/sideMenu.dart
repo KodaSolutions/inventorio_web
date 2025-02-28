@@ -43,6 +43,7 @@ class _SideMenuState extends State<SideMenu> {
         duration: const Duration(milliseconds: 150),
         width: breakPoint != 1 && breakPoint != 2 ? 0 :  expandedSideMenu ? widget.containerSideMenuWidth : 80,
         decoration: BoxDecoration(
+          color: Colors.white,
           border: Border(
             left: BorderSide(
               color: Colors.black54.withOpacity(0.1),

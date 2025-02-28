@@ -13,7 +13,7 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
 
   double? spaceContainer;
-  double containerHeightFijo = 155.0;
+  double containerHeightFijo = 145.0;
   int edoBreakPoint = 0;
 
   final List<Map<String, dynamic>> cardData = [
@@ -47,6 +47,9 @@ class _HeaderState extends State<Header> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      widget.breakPoint(edoBreakPoint);
+    });
   }
 
   void updateBreakPoint(double width) {
@@ -78,7 +81,7 @@ class _HeaderState extends State<Header> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        double containerWidthResponsive = constraints.maxWidth * 0.24;
+        double containerWidthResponsive = constraints.maxWidth * 0.22;
         WidgetsBinding.instance.addPostFrameCallback((_){
           double windowWidth = MediaQuery.of(context).size.width;
           updateBreakPoint(windowWidth);
@@ -86,9 +89,12 @@ class _HeaderState extends State<Header> {
         });
 
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
+            spacerVertical(),
             Row(
                 children: [
+                  spacerHorizontal(),
                   Expanded(
                     child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,19 +119,20 @@ class _HeaderState extends State<Header> {
                   ),),
                   if(edoBreakPoint != 4)...[
                     lateralInfo(true),
-                  ]
-
+                  ],
+                  spacerHorizontal(),
                 ],
             ),
             const SizedBox(height: 20,),
             if(edoBreakPoint == 2 || edoBreakPoint == 3)...[
               GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 25),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
                     mainAxisExtent: 155,
                   ),
                   itemCount: 4,
@@ -141,23 +148,29 @@ class _HeaderState extends State<Header> {
                     );}
               )
             ]
-            else if(edoBreakPoint == 1) ... [Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(cardData.length, (index) {
-                final card = cardData[index];
-                return containerColored(
-                  card['amount'],
-                  card['title'],
-                  card['description'],
-                  card['colors'],
-                  containerWidthResponsive,
-                  containerHeightFijo,
-                );
-              }),
-            ) ,]
+            else if(edoBreakPoint == 1) ... [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 23),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(cardData.length, (index) {
+                    final card = cardData[index];
+                    return containerColored(
+                      card['amount'],
+                      card['title'],
+                      card['description'],
+                      card['colors'],
+                      containerWidthResponsive,
+                      containerHeightFijo,
+                    );
+                  }),
+                ),
+              )
+            ]
             else if(edoBreakPoint == 4)...[
                 GridView.builder(
                     shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     physics: const NeverScrollableScrollPhysics(), // Evita scroll interno
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 1,
@@ -187,9 +200,9 @@ class _HeaderState extends State<Header> {
   Widget containerColored (String amuount, String title, String description, List<Color> colors, double width, double height,) {
     assert(colors.length == 3, 'La lista de colores debe contener exactamente 3 colores.');
     return Container(
-      width: width,
       height: height,
-      padding: const EdgeInsets.all(25),
+      width: width,
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(5)),
         border: Border.all(color: Colors.black54.withOpacity(0.4)),
@@ -210,24 +223,13 @@ class _HeaderState extends State<Header> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(title, style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18
-                    ),),
-                    Text('\$$amuount', style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20
-                    ),),
-                    Text(description, style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.normal,
-                        fontSize: 14, height: 2.0))]),
-              const Row(
+                    Text(title.toUpperCase(), style: titlestyle),
+                    Text('\$$amuount', style: moneyamount),
+                    Text(description, style: label)]),
+              Row(
                 children: [
-                  Icon(Icons.arrow_circle_up_rounded, color: Colors.white,),
-                  Text('+426', style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18))])])])
+                  const Icon(Icons.arrow_circle_up_rounded, color: Colors.white,),
+                  Text('+426', style: label),])])])
     );
   }
   Widget lateralInfo (bool up){
@@ -301,4 +303,32 @@ class _HeaderState extends State<Header> {
       ],
     );
   }
+
+  Widget spacerHorizontal (){
+    return const SizedBox(width: 20);
+  }
+
+  Widget spacerVertical (){
+    return const SizedBox(height: 25);
+  }
+
+  static const TextStyle titlestyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 12,
+    color: Colors.white
+  );
+
+  static const TextStyle moneyamount = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 22,
+    color: Colors.white,
+    height: 2.0,
+  );
+
+  static TextStyle label = TextStyle(
+    fontWeight: FontWeight.normal,
+    fontSize: 12,
+    color: Colors.white.withOpacity(0.65),
+  );
+
 }

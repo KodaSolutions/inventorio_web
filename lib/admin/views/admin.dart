@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventorio_web/admin/listeners/breakPoint.dart';
 import 'package:inventorio_web/admin/listeners/sizeSideMenu.dart';
+import 'package:inventorio_web/admin/widgetsAdmin/tableStats/tableStats.dart';
+import 'package:inventorio_web/admin/widgetsAdmin/visualStats/visualStats.dart';
 
 import '../listeners/sideBarHeight.dart';
+import '../widgetsAdmin/activityStats/activityStats.dart';
 import '../widgetsAdmin/header.dart';
 import '../widgetsAdmin/appBar.dart';
 import '../widgetsAdmin/sideMenu.dart';
@@ -33,6 +36,7 @@ class _AdminState extends State<Admin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[50],
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +44,7 @@ class _AdminState extends State<Admin> {
           AnimatedContainer(
             alignment: Alignment.center,
             duration: const Duration(milliseconds: 150),
-            width: breakPoint.expand!= 1 && breakPoint.expand != 2 ? 0 :  expandedMenu ? containerSideMenuWidth : 80,
+            width: breakPoint.valor!= 1 && breakPoint.valor != 2 ? 0 :  expandedMenu ? containerSideMenuWidth : 80,
             child: SideMenu(
               containerSideMenuWidth: containerSideMenuWidth,
               sideBarHeightListener: sideBarHeightListener,
@@ -50,6 +54,8 @@ class _AdminState extends State<Admin> {
           ),
           Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                   color: Colors.transparent,child:
@@ -62,7 +68,6 @@ class _AdminState extends State<Admin> {
                 });
               },
                 onChangeSizeSideMenu: (changeSize) {
-                  print('changeadminr $changeSize');
                   setState(() {
                     expandedMenu = changeSize;
                     changeSizeSideMenu.setValue(changeSize);
@@ -70,15 +75,30 @@ class _AdminState extends State<Admin> {
 
               },),),
                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 20
-                    ),
-                    child: Header(breakPoint: (breakPoint) {
-                      this.breakPoint.setValue(breakPoint);
-                    },),
-                  )),
+                   child: SingleChildScrollView(
+                 child: Column(
+                   mainAxisSize: MainAxisSize.min,
+                   children: [
+                     Flexible(
+                         child: Header(
+                           breakPoint: (breakPoint) {
+                           this.breakPoint.setValue(breakPoint);
+                         },)),
+                     Flexible(
+                         child: VisualStats(
+                           breakPoint: breakPoint
+                     )),
+                     Flexible(
+                         child: Activitystats(
+                           breakPoint: breakPoint
+                     )),
+                     Flexible(
+                         child: TableStats(
+                           breakPoint: breakPoint
+                     )),
+                   ],
+                 ),
+               ))
             ],
           )),
         ],
